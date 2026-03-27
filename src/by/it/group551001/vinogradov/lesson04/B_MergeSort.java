@@ -30,6 +30,50 @@ public class B_MergeSort {
             System.out.print(index + " ");
         }
     }
+    void merge(int[] s, int l, int m, int r) {
+        int n1 = m - l + 1;
+        int n2 = r - m;
+        int[] left = new int[n1]; int[] right = new int[n2];
+        for (int i = 0; i < n1; i++) {
+            left[i] = s[l + i];
+        }
+        for (int i = 0; i < n2; i++) {
+            right[i] = s[m + 1 + i];
+        }
+        int i = 0;
+        int j = 0;
+        int k = l;
+        while ((i < n1) && (j < n2)) {
+            if (left[i] < right[j]) {
+                s[k] = left[i];
+                i++;
+            }
+            else {
+                s[k] = right[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < n1) {
+            s[k] = left[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            s[k] = right[j];
+            j++;
+            k++;
+        }
+    }
+
+    void mergeSort(int[] s, int l, int r) {
+        if (l < r) {
+            int m = l + (r - l) / 2;
+            mergeSort(s, l, m);
+            mergeSort(s, m + 1, r);
+            merge(s, l, m, r);
+        }
+    }
 
     int[] getMergeSort(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -44,14 +88,7 @@ public class B_MergeSort {
             a[i] = scanner.nextInt();
             System.out.println(a[i]);
         }
-
-        // тут ваше решение (реализуйте сортировку слиянием)
-        // https://ru.wikipedia.org/wiki/Сортировка_слиянием
-
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        mergeSort(a, 0, n-1);
         return a;
     }
-
-
 }
