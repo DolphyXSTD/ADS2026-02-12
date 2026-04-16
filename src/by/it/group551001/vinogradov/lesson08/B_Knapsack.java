@@ -2,6 +2,7 @@ package by.it.group551001.vinogradov.lesson08;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -32,15 +33,38 @@ public class B_Knapsack {
         Scanner scanner = new Scanner(stream);
         int w=scanner.nextInt();
         int n=scanner.nextInt();
-        int gold[]=new int[n];
+        int[] gold =new int[n];
+        ArrayList<Integer>[] dp = new ArrayList[w+1];
         for (int i = 0; i < n; i++) {
             gold[i]=scanner.nextInt();
         }
-
-
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        for (int i = 0; i <= w; i++) {
+            dp[i] = new ArrayList<>();
+            dp[i].add(0);
+        }
+        for (int i = 0; i <= w; i++) {
+            if (i > 0) dp[i].set(0, dp[i-1].getFirst());
+            int curr = -1;
+            for (int j = 0; j < n; j++) {
+                if (gold[j] > i) continue;
+                int target = i - gold[j];
+                boolean f = false;
+                for (int k = 1; k < dp[target].size(); k++) {
+                    if (dp[target].get(k) == j) {
+                        f = true;
+                        break;
+                    }
+                }
+                if (!f && gold[j] + dp[target].getFirst() > dp[i].getFirst()) {
+                    dp[i] = new ArrayList<>(dp[target]);
+                    dp[i].set(0, dp[i].getFirst() + gold[j]);
+                    curr = j;
+                }
+            }
+            if (curr > -1)
+                dp[i].add(curr);
+        }
+        return dp[w].getFirst();
     }
 
 
