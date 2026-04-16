@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import static java.lang.Math.max;
+
 /*
 Задача на программирование: наибольшая кратная подпоследовательность
 
@@ -44,12 +46,23 @@ public class B_LongDivComSubSeq {
         //общая длина последовательности
         int n = scanner.nextInt();
         int[] m = new int[n];
+        int[] dp = new int[n];
         //читаем всю последовательность
         for (int i = 0; i < n; i++) {
             m[i] = scanner.nextInt();
+            dp[i] = 1;
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
+        for (int i = n-1; i >= 0; i--) {
+            for (int j = i+1; j < n; j++) {
+                if(m[j] % m[i] == 0) {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+        }
         int result = 0;
+        for (int i = 0; i < n; i++) {
+            result = max(result, dp[i]);
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
